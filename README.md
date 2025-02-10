@@ -61,35 +61,6 @@ Response
 }
 ```
 
-### 2. Listar itens do carrinho atual
-Criar um endpoint para listar os produtos no carrinho atual.
-
-ROTA: `/cart`
-
-Response:
-```js
-{
-  "id": 789, // id do carrinho
-  "products": [
-    {
-      "id": 645,
-      "name": "Nome do produto",
-      "quantity": 2,
-      "unit_price": 1.99, // valor unitário do produto
-      "total_price": 3.98, // valor total do produto
-    },
-    {
-      "id": 646,
-      "name": "Nome do produto 2",
-      "quantity": 2,
-      "unit_price": 1.99,
-      "total_price": 3.98,
-    },
-  ],
-  "total_price": 7.96 // valor total no carrinho
-}
-```
-
 ### 3. Alterar a quantidade de produtos no carrinho 
 Um carrinho pode ter _N_ produtos, se o produto já existir no carrinho, apenas a quantidade dele deve ser alterada
 
@@ -126,7 +97,7 @@ Response:
 }
 ```
 
-### 3. Remover um produto do carrinho 
+### 4. Remover um produto do carrinho 
 
 Criar um endpoint para excluir um produto do do carrinho. 
 
@@ -216,3 +187,8 @@ bundle exec rspec
 
 ### Como enviar seu projeto
 Salve seu código em um versionador de código (GitHub, GitLab, Bitbucket) e nos envie o link publico. Se achar necessário, informe no README as instruções para execução ou qualquer outra informação relevante para correção/entendimento da sua solução.
+
+
+
+# NOTAS PESSOAIS
+- JSON retorna price como string
