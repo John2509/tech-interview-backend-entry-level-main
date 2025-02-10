@@ -11,5 +11,14 @@ class Cart < ApplicationRecord
     self.total_price = self.cart_items.map(&:total_price).sum()
   end
 
+  def add_cart_item(product, quantity)
+    cart_item = self.cart_items.with_product(product).first
+    if cart_item
+      cart_item.update(quantity: cart_item.quantity + quantity)
+    else
+      CartItem.create!(quantity: quantity, cart: self, product: product)
+    end
+  end
+
   # TODO: lógica para marcar o carrinho como abandonado e remover se abandonado
 end

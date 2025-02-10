@@ -7,6 +7,8 @@ class CartItem < ApplicationRecord
   
   validates_presence_of :quantity
   validates_numericality_of :quantity, greater_than_or_equal_to: 0
+
+  scope :with_product, ->(product) { where(product: product) }
   
   after_save :update_cart
 

@@ -10,7 +10,7 @@ class CartsController < ApplicationController
   def create
     @cart = session[:cart_id] ? set_cart : Cart.new
 
-    add_item_cart
+    @cart.add_cart_item(product, cart_item_quantity)
 
     if @cart.save
       if session[:cart_id]
@@ -29,12 +29,8 @@ class CartsController < ApplicationController
       @cart = Cart.find(session[:cart_id])
     end
 
-    def add_item_cart
-      CartItem.create!(quantity: cart_item_quantity, cart: @cart, product: product)
-    end
-
     def cart_item_quantity
-      params.require(:quantity)
+      Integer(params.require(:quantity))
     end
 
     def product
@@ -50,7 +46,7 @@ class CartsController < ApplicationController
         id: @cart.id,
         total_price: @cart.total_price,
         products: @cart.cart_items.map{ |cart_item| {
-          id: cart_item.id,
+          id: cart_item.product.id,
           quantity: cart_item.quantity,
           total_price: cart_item.total_price,
           name: cart_item.name,
