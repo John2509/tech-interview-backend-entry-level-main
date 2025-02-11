@@ -2,9 +2,14 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
+
   resources :products
-  resource :cart
+
+  resource :cart, only: [:show, :create]
   resolve("Cart") { [:cart] }
+
+  put "/cart/add_item", to: "carts#add_item"
+
   get "up" => "rails/health#show", as: :rails_health_check
 
   root "rails/health#show"

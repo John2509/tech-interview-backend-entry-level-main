@@ -20,42 +20,6 @@ O desafio consiste em uma API para gerenciamento do um carrinho de compras de e-
 
 Você deve desenvolver utilizando a linguagem Ruby e framework Rails, uma API Rest que terá 3 endpoins que deverão implementar as seguintes funcionalidades:
 
-### 3. Alterar a quantidade de produtos no carrinho 
-Um carrinho pode ter _N_ produtos, se o produto já existir no carrinho, apenas a quantidade dele deve ser alterada
-
-ROTA: `/cart/add_item`
-
-Payload
-```json
-{
-  "product_id": 1230,
-  "quantity": 1
-}
-```
-Response:
-```json
-{
-  "id": 1,
-  "products": [
-    {
-      "id": 1230,
-      "name": "Nome do produto X",
-      "quantity": 2, // considerando que esse produto já estava no carrinho
-      "unit_price": 7.00, 
-      "total_price": 14.00, 
-    },
-    {
-      "id": 01020,
-      "name": "Nome do produto Y",
-      "quantity": 1,
-      "unit_price": 9.90, 
-      "total_price": 9.90, 
-    },
-  ],
-  "total_price": 23.9
-}
-```
-
 ### 4. Remover um produto do carrinho 
 
 Criar um endpoint para excluir um produto do do carrinho. 
@@ -151,3 +115,4 @@ Salve seu código em um versionador de código (GitHub, GitLab, Bitbucket) e nos
 
 # NOTAS PESSOAIS
 - JSON retorna price como string
+- As rotas Post e Put estão redundantes na descrição
