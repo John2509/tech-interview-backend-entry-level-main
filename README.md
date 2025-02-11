@@ -96,3 +96,4 @@ Salve seu código em um versionador de código (GitHub, GitLab, Bitbucket) e nos
 - Possivel testar delegação com o shoulda
 - Não definiria um metodo pra marcar como abandonado ou campo para isso. Usar apenar o last interaction garante que os dois campos não fiquem defazados 
 - As transações não estão atomicas, tenho que mudar isso
+- Session não parecem ser mockaveis no rails 7, então vou testar o fluxo todo
