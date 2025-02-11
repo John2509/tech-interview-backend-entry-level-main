@@ -20,7 +20,7 @@ class CartsController < ApplicationController
     end
   end
 
-  # PUT /cart/add_item
+  # POST /cart/add_item
   def add_item
     @cart.add_cart_item!(product, cart_item_quantity)
     render json: cart_view
