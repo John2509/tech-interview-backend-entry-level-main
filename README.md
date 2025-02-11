@@ -106,3 +106,5 @@ Salve seu código em um versionador de código (GitHub, GitLab, Bitbucket) e nos
 - Add_item com numero negativo remove items do carrinho, mas não deixa com menos de 1
 - Testes não estão rodando na tabela de teste
 - Possivel testar delegação com o shoulda
+- Não definiria um metodo pra marcar como abandonado ou campo para isso. Usar apenar o last interaction garante que os dois campos não fiquem defazados 
+- As transações não estão atomicas, tenho que mudar isso
