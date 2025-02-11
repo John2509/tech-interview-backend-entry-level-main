@@ -34,7 +34,7 @@ class Cart < ApplicationRecord
   end
 
   def mark_as_abandoned
-    self.update(abandoned: true) if self.last_interaction_at <= ABANDONED_THRESHOLD.hours.ago
+    self.update_attribute(:abandoned, true) if (not self.abandoned?) and self.last_interaction_at <= ABANDONED_THRESHOLD.hours.ago
   end
 
   def remove_if_abandoned
