@@ -1,9 +1,9 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "/products", type: :request do
   let(:valid_attributes) {
     {
-      name: 'A product',
+      name: "A product",
       price: 1
     }
   }
@@ -70,7 +70,7 @@ RSpec.describe "/products", type: :request do
 
   describe "PATCH /update" do
     context "with valid parameters" do
-      let(:new_name) { 'Another name' }
+      let(:new_name) { "Another name" }
       let(:new_price) { 2 }
       let(:new_attributes) {
         {

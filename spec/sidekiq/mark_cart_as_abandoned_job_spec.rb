@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 RSpec.describe MarkCartAsAbandonedJob, type: :job do
   describe "#perform" do
     subject do
