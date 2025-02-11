@@ -1,5 +1,5 @@
 class CartsController < ApplicationController
-  before_action :set_cart, only: %i[ show add_item ]
+  before_action :set_cart, only: %i[ show add_item destroy_item ]
 
   # GET /cart
   def show
@@ -10,15 +10,11 @@ class CartsController < ApplicationController
   def create
     @cart = session[:cart_id] ? set_cart : Cart.new
 
-    @cart.add_cart_item(product, cart_item_quantity)
+    @cart.add_cart_item!(product, cart_item_quantity)
 
     if @cart.save
-      if session[:cart_id]
-        render json: cart_view
-      else
-        session[:cart_id] = @cart.id
-        render json: cart_view, status: :created
-      end
+      session[:cart_id] = @cart.id unless session[:cart_id]
+      render json: cart_view, status: :created
     else
       render json: @cart.errors, status: :unprocessable_entity
     end
@@ -26,12 +22,17 @@ class CartsController < ApplicationController
 
   # PUT /cart/add_item
   def add_item
-    @cart.add_cart_item(product, cart_item_quantity)
+    @cart.add_cart_item!(product, cart_item_quantity)
+    render json: cart_view
+  end
 
-    if @cart.save
+  # DELETE /cart/:product_id
+  def destroy_item
+    begin
+      @cart.destroy_cart_item!(product)
       render json: cart_view
-    else
-      render json: @cart.errors, status: :unprocessable_entity
+    rescue => exception
+      render json: { error: exception }, status: 400
     end
   end
 

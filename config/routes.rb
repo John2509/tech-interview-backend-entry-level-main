@@ -7,8 +7,8 @@ Rails.application.routes.draw do
 
   resource :cart, only: [:show, :create]
   resolve("Cart") { [:cart] }
-
   put "/cart/add_item", to: "carts#add_item"
+  delete "/cart/:product_id", to: "carts#destroy_item"
 
   get "up" => "rails/health#show", as: :rails_health_check
 

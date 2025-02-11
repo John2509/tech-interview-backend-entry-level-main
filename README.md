@@ -20,20 +20,6 @@ O desafio consiste em uma API para gerenciamento do um carrinho de compras de e-
 
 Você deve desenvolver utilizando a linguagem Ruby e framework Rails, uma API Rest que terá 3 endpoins que deverão implementar as seguintes funcionalidades:
 
-### 4. Remover um produto do carrinho 
-
-Criar um endpoint para excluir um produto do do carrinho. 
-
-ROTA: `/cart/:product_id`
-
-
-#### Detalhes adicionais:
-
-- Verifique se o produto existe no carrinho antes de tentar removê-lo.
-- Se o produto não estiver no carrinho, retorne uma mensagem de erro apropriada.
-- Após remover o produto, retorne o payload com a lista atualizada de produtos no carrinho.
-- Certifique-se de que o endpoint lida corretamente com casos em que o carrinho está vazio após a remoção do produto.
-
 ### 5. Excluir carrinhos abandonados
 Um carrinho é considerado abandonado quando estiver sem interação (adição ou remoção de produtos) há mais de 3 horas.
 
@@ -116,3 +102,5 @@ Salve seu código em um versionador de código (GitHub, GitLab, Bitbucket) e nos
 # NOTAS PESSOAIS
 - JSON retorna price como string
 - As rotas Post e Put estão redundantes na descrição
+- Atualizar o preço do produto não afeta o total price do carrinho até uma operação ser feita
+- Add_item com numero negativo remove items do carrinho, mas não deixa com menos de 1

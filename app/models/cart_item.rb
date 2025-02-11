@@ -6,11 +6,12 @@ class CartItem < ApplicationRecord
   delegate :price, to: :product, prefix: :unit
   
   validates_presence_of :quantity
-  validates_numericality_of :quantity, greater_than_or_equal_to: 0
+  validates_numericality_of :quantity, greater_than_or_equal_to: 1
 
   scope :with_product, ->(product) { where(product: product) }
   
   after_save :update_cart
+  after_destroy :update_cart
 
   def total_price
     self.product.price * self.quantity
