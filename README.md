@@ -104,3 +104,5 @@ Salve seu código em um versionador de código (GitHub, GitLab, Bitbucket) e nos
 - As rotas Post e Put estão redundantes na descrição
 - Atualizar o preço do produto não afeta o total price do carrinho até uma operação ser feita
 - Add_item com numero negativo remove items do carrinho, mas não deixa com menos de 1
+- Testes não estão rodando na tabela de teste
+- Possivel testar delegação com o shoulda
