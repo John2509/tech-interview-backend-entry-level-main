@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Product, type: :model do
+  context 'with relationships' do
+    it "should have many cart_items" do
+      t = Product.reflect_on_association(:cart_items)
+      expect(t.macro).to eq(:has_many)
+    end
+  end
+
   context 'when validating' do
     it 'validates presence of name' do
       product = described_class.new(price: 100)
