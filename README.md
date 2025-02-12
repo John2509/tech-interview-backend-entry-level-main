@@ -1,99 +1,97 @@
-# Desafio técnico e-commerce
+# Technical Challenge E-Commerce
+This project implements a simple project for a basic e-commerce. It's composed of a main server, a database and a Redis channel. Its main functions are:
+- Exposing routes and maintaining a database for products;
+- Exposing routes and maintaining a database for a cart;
+- Removing carts once they have been inactive for too long;
 
-## Nossas expectativas
+## Getting started
+### Setup
+This project was developed to work with a dev container. It can be run directly on your machine, but the following setup uses dev containers.
 
-A equipe de engenharia da RD Station tem alguns princípios nos quais baseamos nosso trabalho diário. Um deles é: projete seu código para ser mais fácil de entender, não mais fácil de escrever.
+#### Installing VSCode and the extension
+To install VSCode, follow [these instructions](https://code.visualstudio.com/download) according to what suits your operating system.
+To install the extension, follow [these instructions](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
 
-Portanto, para nós, é mais importante um código de fácil leitura do que um que utilize recursos complexos e/ou desnecessários.
+#### Installing Docker
+To install Docker, follow [these instructions](https://docs.docker.com/get-started/get-docker/) according to what suits your operating system. The benefit of using a dev container is that the operating system does not matter from this point onwards.
 
-O que gostaríamos de ver:
+#### Download the source code
+Clone the project via GitHub.
 
-- O código deve ser fácil de ler. Clean Code pode te ajudar.
-- Notas gerais e informações sobre a versão da linguagem e outras informações importantes para executar seu código.
-- Código que se preocupa com a performance (complexidade de algoritmo).
-- O seu código deve cobrir todos os casos de uso presentes no README, mesmo que não haja um teste implementado para tal.
-- A adição de novos testes é sempre bem-vinda.
-- Você deve enviar para nós o link do repositório público com a aplicação desenvolvida (GitHub, BitBucket, etc.).
+#### Open the project on VSCode
+You will be prompted to re-open the project on a dev container.
+Once it re-opens, you will have the environment fully prepared with a migrated database, a Redis channel and the port 3000 waiting for the main server.
 
-## O Desafio - Carrinho de compras
-O desafio consiste em uma API para gerenciamento do um carrinho de compras de e-commerce.
-
-Você deve desenvolver utilizando a linguagem Ruby e framework Rails, uma API Rest que terá 3 endpoins que deverão implementar as seguintes funcionalidades:
-
-### Como resolver
-
-#### Implementação
-Você deve usar como base o código disponível nesse repositório e expandi-lo para que atenda as funcionalidade descritas acima.
-
-Há trechos parcialmente implementados e também sugestões de locais para algumas das funcionalidades sinalizados com um `# TODO`. Você pode segui-los ou fazer da maneira que julgar ser a melhor a ser feita, desde que atenda os contratos de API e funcionalidades descritas.
-
-#### Testes
-Existem testes pendentes, eles estão marcados como <span style="color:green;">Pending</span>, e devem ser implementados para garantir a cobertura dos trechos de código implementados por você.
-Alguns testes já estão passando e outros estão com erro. Com a sua implementação os testes com erro devem passar a funcionar. 
-A adição de novos testes é sempre bem-vinda, mas sem alterar os já implementados.
-
-
-### O que esperamos
-- Implementação dos testes faltantes e de novos testes para os métodos/serviços/entidades criados
-- Construção das 4 rotas solicitadas
-- Implementação de um job para controle dos carrinhos abandonados
-
-
-### Itens adicionais / Legais de ter
-- Utilização de factory na construção dos testes
-- Desenvolvimento do docker-compose / dockerização da app
-
-A aplicação já possui um Dockerfile, que define como a aplicação deve ser configurada dentro de um contêiner Docker. No entanto, para completar a dockerização da aplicação, é necessário criar um arquivo `docker-compose.yml`. O arquivo irá definir como os vários serviços da aplicação (por exemplo, aplicação web, banco de dados, etc.) interagem e se comunicam.
-
-- Adicione tratamento de erros para situações excepcionais válidas, por exemplo: garantir que um produto não possa ter quantidade negativa. 
-
-- Se desejar você pode adicionar a configuração faltante no arquivo `docker-compose.yml` e garantir que a aplicação rode de forma correta utilizando Docker. 
-
-## Informações técnicas
-
-### Dependências
-- ruby 3.3.1
-- rails 7.1.3.2
-- postgres 16
-- redis 7.0.15
-
-### Como executar o projeto
-
-## Executando a app sem o docker
-Dado que todas as as ferramentas estão instaladas e configuradas:
-
-Instalar as dependências do:
-```bash
-bundle install
-```
-
-Executar o sidekiq:
-```bash
-bundle exec sidekiq
-```
-
-Executar projeto:
+### Running the server
+To start the server, run:
 ```bash
 bundle exec rails server
 ```
 
-Executar os testes:
+To start sidekiq, run:
 ```bash
-bundle exec rspec
+bundle exec sidekiq
 ```
 
-### Como enviar seu projeto
-Salve seu código em um versionador de código (GitHub, GitLab, Bitbucket) e nos envie o link publico. Se achar necessário, informe no README as instruções para execução ou qualquer outra informação relevante para correção/entendimento da sua solução.
+To execute the automated tests, run:
+```bash
+bundle exec sidekiq
+```
 
+## Available Routes
+### Products
+- **GET** `/products`  
+  Fetch a list of all products.
 
+- **GET** `/products/:id`  
+  Fetch details of a specific product by ID.
 
-# NOTAS PESSOAIS
-- JSON retorna price como string
-- As rotas Post e Put estão redundantes na descrição
-- Atualizar o preço do produto não afeta o total price do carrinho até uma operação ser feita
-- Add_item com numero negativo remove items do carrinho, mas não deixa com menos de 1
-- Testes não estão rodando na tabela de teste
-- Possivel testar delegação com o shoulda
-- Não definiria um metodo pra marcar como abandonado ou campo para isso. Usar apenar o last interaction garante que os dois campos não fiquem defazados 
-- As transações não estão atomicas, tenho que mudar isso
-- Session não parecem ser mockaveis no rails 7, então vou testar o fluxo todo
+- **POST** `/products`  
+  Create a new product.
+
+- **PATCH** `/products/:id`  
+  Update a product partially by ID.
+
+- **PUT** `/products/:id`  
+  Update a product completely by ID.
+
+- **DELETE** `/products/:id`  
+  Delete a product by ID.
+
+### Cart
+- **GET** `/cart`  
+  Fetch the cart in the current session, and it's products
+
+- **POST** `/cart`  
+  Create a new cart if the current session has none, otherwise fetch it.
+  Then add an item to it.
+
+- **POST** `/cart/add_item`  
+  Adds an item from the cart in the current session.
+
+- **DELETE** `/cart/:product_id`  
+  Removes an item from the cart in the current session product by ID.
+  If that cart doesn't have that product, returns an error.
+
+## Jobs
+- **MarkCartAsAbandonedJob**
+  Runs every hour. Mark carts with more than 3 hours of inactivity as abandoned. Delete carts with more than 7 days of inactivity.
+
+## Known issues & possible improvements
+### Price in the JSON response
+  The challenge has prices returning as numbers in the JSON, but that's not the native JSON parse of floats, due to potential floating point errors. I have kept the native JSON parse as a string.
+
+### POST /cart and POST /cart/add_item
+  Both routes are very similar and neither allows you to decrease an item quantity, unless you pass a negative quantity, which is a bit of a hack. I would recommend changing the POST /cart/add_item to PUT /cart/:product_id, which would allow you to directly set the quantity of an item in the cart.
+
+### Total Price
+  Since the total price is a field on the database, it does not dynamically change with a change in the product price. The price will be the same until the cart is interacted with. That could either be a feature or a bug, depending on the intentions of the E-Commerce, but it is something worth bringing up regardless.
+
+### Session and spec\requests\carts_spec.rb
+ From what I have researched, [session are not easily mockable in rails 7](https://stackoverflow.com/a/74640014). Therefore, the cart integration tests perform the whole path in the test. That is why there are a lot of POST /cart call, since that is the only route that sets the cart session.
+
+### Atomicity
+ The routes calls are not atomic currently and with more time, I would change that.
+
+## Final considerations
+This project was developed as part of a recruitment process. There is no intent for this project to be open to the public, nor for it to have some real-world applications.
