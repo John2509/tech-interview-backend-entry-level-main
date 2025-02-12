@@ -85,7 +85,7 @@ bundle exec rspec
   Both routes are very similar and neither allows you to decrease an item quantity, unless you pass a negative quantity, which is a bit of a hack. I would recommend changing the POST /cart/add_item to PUT /cart/:product_id, which would allow you to directly set the quantity of an item in the cart.
 
 ### Total Price
-  Since the total price is a field on the database, it does not dynamically change with a change in the product price. The price will be the same until the cart is interacted with. That could either be a feature or a bug, depending on the intentions of the E-Commerce, but it is something worth bringing up regardless.
+  Since the cart's total price is a field on the database, it does not dynamically change with a change in the product price. The price will be the same until the cart is interacted with. That could either be a feature or a bug, depending on the intentions of the E-Commerce, but it is something worth bringing up regardless.
 
 ### Session and spec\requests\carts_spec.rb
  From what I have researched, [session are not easily mockable in rails 7](https://stackoverflow.com/a/74640014). Therefore, the cart integration tests perform the whole path in the test. That is why there are a lot of POST /cart call, since that is the only route that sets the cart session.
