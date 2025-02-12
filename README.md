@@ -95,3 +95,5 @@ bundle exec rspec
 
 ## Final considerations
 This project was developed as part of a recruitment process. There is no intent for this project to be open to the public, nor for it to have some real-world applications.
+
+- After the deadline, I implemented a full docker setup. It is on [this branch](https://github.com/John2509/tech-interview-backend-entry-level-main/tree/feat/full-docker)
