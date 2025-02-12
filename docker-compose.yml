@@ -22,7 +22,9 @@ services:
             - myapp_net
     web:
         build: .
-        command: bundle exec rails server
+        command: bundle exec rails server 
+        ports:
+            - '3000:3000'
         volumes:
             - .:/rails
         depends_on:
