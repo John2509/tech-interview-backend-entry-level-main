@@ -35,6 +35,19 @@ services:
             - REDIS_URL=redis://redis:6379/0
         networks:
             - myapp_net
+    sidekiq:
+        build: .
+        command: bundle exec sidekiq
+        volumes:
+            - .:/rails
+        depends_on:
+            - db
+            - redis
+        environment:
+            - DATABASE_URL=postgresql://postgres:password@db:5432/myapp
+            - REDIS_URL=redis://redis:6379/0
+        networks:
+            - myapp_net
     test:
         build: .
         command: bundle exec rspec
