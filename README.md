@@ -35,7 +35,7 @@ bundle exec sidekiq
 
 To execute the automated tests, run:
 ```bash
-bundle exec sidekiq
+bundle exec rspec
 ```
 
 ## Available Routes
