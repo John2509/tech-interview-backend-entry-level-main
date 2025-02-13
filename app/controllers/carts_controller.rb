@@ -1,5 +1,5 @@
 class CartsController < ApplicationController
-  before_action :set_cart, only: %i[ show add_item destroy_item ]
+  before_action :set_cart, only: %i[show add_item destroy_item]
 
   # GET /cart
   def show
@@ -28,42 +28,43 @@ class CartsController < ApplicationController
 
   # DELETE /cart/:product_id
   def destroy_item
-    begin
-      @cart.destroy_cart_item!(product)
-      render json: cart_view
-    rescue => exception
-      render json: { error: exception }, status: 400
-    end
+    @cart.destroy_cart_item!(product)
+    render json: cart_view
+  rescue StandardError => e
+    render json: { error: e }, status: :bad_request
   end
 
   private
-    def set_cart
-      @cart = Cart.find(session[:cart_id])
-    end
 
-    def cart_item_quantity
-      Integer(params.require(:quantity))
-    end
+  def set_cart
+    @cart = Cart.find(session[:cart_id])
+  end
 
-    def product
-      @product ||= Product.find(product_id)
-    end
+  def cart_item_quantity
+    Integer(params.require(:quantity))
+  end
 
-    def product_id
-      params.require(:product_id)
-    end
+  def product
+    @product ||= Product.find(product_id)
+  end
 
-    def cart_view
-      {
-        id: @cart.id,
-        total_price: @cart.total_price,
-        products: @cart.cart_items.map{ |cart_item| {
+  def product_id
+    params.require(:product_id)
+  end
+
+  def cart_view
+    {
+      id: @cart.id,
+      total_price: @cart.total_price,
+      products: @cart.cart_items.map do |cart_item|
+        {
           id: cart_item.product.id,
           quantity: cart_item.quantity,
           total_price: cart_item.total_price,
           name: cart_item.name,
-          unit_price: cart_item.unit_price,
-        }},
-      }
-    end
+          unit_price: cart_item.unit_price
+        }
+      end
+    }
+  end
 end

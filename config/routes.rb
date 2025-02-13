@@ -5,12 +5,12 @@ Rails.application.routes.draw do
 
   resources :products
 
-  resource :cart, only: [:show, :create]
-  resolve("Cart") { [:cart] }
-  post "/cart/add_item", to: "carts#add_item"
-  delete "/cart/:product_id", to: "carts#destroy_item"
+  resource :cart, only: %i[show create]
+  resolve('Cart') { [:cart] }
+  post '/cart/add_item', to: 'carts#add_item'
+  delete '/cart/:product_id', to: 'carts#destroy_item'
 
-  get "up" => "rails/health#show", as: :rails_health_check
+  get 'up' => 'rails/health#show', as: :rails_health_check
 
-  root "rails/health#show"
+  root 'rails/health#show'
 end
