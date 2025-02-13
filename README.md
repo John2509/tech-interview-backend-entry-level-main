@@ -39,6 +39,11 @@ To execute the automated tests, run:
 bundle exec rspec
 ```
 
+To run Rubocop, run:
+```bash
+bundle exec rubocop --require rubocop-rails
+```
+
 #### Using docker compose
 You can also run the main server, database, redis channel and the tests outside of the dev container with:
 ```bash
