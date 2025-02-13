@@ -10,7 +10,7 @@ class CartsController < ApplicationController
 
   # POST /cart
   def create
-    @cart = session[:cart_id] ? set_cart : Cart.new
+    @cart = session[:cart_id] ? set_cart : Cart.new(total_price: 0)
 
     @cart.add_cart_item!(product, cart_item_quantity)
 

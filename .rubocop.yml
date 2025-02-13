@@ -1,0 +1,12 @@
+AllCops:
+  Enabled: true
+  NewCops: enable
+  SuggestExtensions: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Style/Documentation:
+  Enabled: false

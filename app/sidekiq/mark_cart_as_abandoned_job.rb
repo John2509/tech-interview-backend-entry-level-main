@@ -6,7 +6,7 @@ class MarkCartAsAbandonedJob
   include Sidekiq::Job
 
   def perform
-    Cart.all.find_each do |cart|
+    Cart.find_each do |cart|
       if cart.abandoned?
         cart.remove_if_abandoned
       else

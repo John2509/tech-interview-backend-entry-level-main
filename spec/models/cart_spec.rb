@@ -11,31 +11,22 @@ RSpec.describe Cart, type: :model do
   end
 
   context 'when validating' do
-    it 'validates total_price with the callback' do
+    it 'validates numericality of total_price' do
       cart = described_class.new(total_price: -1)
-      expect(cart.valid?).to be_truthy
-      expect(cart.total_price).to eq(0)
+      expect(cart.valid?).to be_falsey
+      expect(cart.errors[:total_price]).to include('must be greater than or equal to 0')
     end
   end
 
   describe 'update_total_price' do
-    context 'when the cart has not been saved yet' do
-      let(:cart) { described_class.new }
-
-      it 'does not call reload' do
-        expect(cart).to_not receive(:reload)
-        cart.update_total_price
-      end
-    end
-
     context 'when the cart has some cart items' do
-      let(:cart) { described_class.create }
-      let(:product_1) { Product.create(name: 'Test Product', price: 10.0) }
-      let(:product_2) { Product.create(name: 'Test Product', price: 5.0) }
+      let(:cart) { described_class.create(total_price: 0) }
+      let(:product1) { Product.create(name: 'Test Product', price: 10.0) }
+      let(:product2) { Product.create(name: 'Test Product', price: 5.0) }
 
       subject do
-        CartItem.create(cart: cart, product: product_1, quantity: 2)
-        CartItem.create(cart: cart, product: product_2, quantity: 1)
+        CartItem.create(cart: cart, product: product1, quantity: 2)
+        CartItem.create(cart: cart, product: product2, quantity: 1)
         cart.update_total_price
       end
 
@@ -46,7 +37,7 @@ RSpec.describe Cart, type: :model do
   end
 
   describe 'add_cart_item!' do
-    let(:cart) { described_class.create }
+    let(:cart) { described_class.create(total_price: 0) }
     let(:product) { Product.create(name: 'Test Product', price: 10.0) }
     let(:quantity) { 2 }
 
@@ -69,7 +60,7 @@ RSpec.describe Cart, type: :model do
   end
 
   describe 'destroy_cart_item!' do
-    let(:cart) { described_class.create }
+    let(:cart) { described_class.create(total_price: 0) }
     let(:product) { Product.create(name: 'Test Product', price: 10.0) }
 
     subject do
@@ -91,7 +82,7 @@ RSpec.describe Cart, type: :model do
   end
 
   describe 'mark_as_abandoned' do
-    let(:shopping_cart) { described_class.new(last_interaction_at: 3.hours.ago) }
+    let(:shopping_cart) { described_class.create!(total_price: 0, last_interaction_at: 3.hours.ago) }
 
     it 'marks the shopping cart as abandoned if inactive for a certain time' do
       expect { shopping_cart.mark_as_abandoned }.to change { shopping_cart.abandoned? }.from(false).to(true)
@@ -99,10 +90,9 @@ RSpec.describe Cart, type: :model do
   end
 
   describe 'remove_if_abandoned' do
-    let(:shopping_cart) { described_class.new(last_interaction_at: 7.days.ago) }
+    let!(:shopping_cart) { described_class.create!(total_price: 0, abandoned: true, last_interaction_at: 7.days.ago) }
 
     it 'removes the shopping cart if abandoned for a certain time' do
-      shopping_cart.mark_as_abandoned
       expect { shopping_cart.remove_if_abandoned }.to change { Cart.count }.by(-1)
     end
   end

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CartItem, type: :model do
-  let(:cart) { Cart.create }
+  let(:cart) { Cart.create(total_price: 0) }
   let(:product) { Product.create(name: 'Test Product', price: 10.0) }
 
   context 'with relationships' do

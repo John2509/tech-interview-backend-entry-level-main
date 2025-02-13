@@ -37,7 +37,7 @@ RSpec.describe '/cart', type: :request do
     it 'renders a successful response and in the correct format' do
       subject
       expect(response).to be_successful
-      body = JSON.parse(response.body)
+      body = response.parsed_body
       expect(body['id']).to eq(session[:cart_id])
       expect(body['total_price']).to eq((product.price * quantity).to_s)
       expected_products = [
@@ -55,11 +55,11 @@ RSpec.describe '/cart', type: :request do
 
   context 'when adding items to a cart' do
     context 'when the product is not on the cart' do
-      let(:product_2) { Product.create(name: 'Test Product 2', price: 20.0) }
+      let(:product2) { Product.create(name: 'Test Product 2', price: 20.0) }
 
       subject do
         post '/cart', params: { product_id: product.id, quantity: 1 }, as: :json
-        post '/cart/add_item', params: { product_id: product_2.id, quantity: 1 }, as: :json
+        post '/cart/add_item', params: { product_id: product2.id, quantity: 1 }, as: :json
       end
 
       it 'renders a successful response and updates the quantity of items in the cart' do
@@ -98,17 +98,17 @@ RSpec.describe '/cart', type: :request do
     end
 
     context 'when the item is not in the cart' do
-      let(:product_2) { Product.create(name: 'Test Product 2', price: 20.0) }
+      let(:product2) { Product.create(name: 'Test Product 2', price: 20.0) }
 
       subject do
         post '/cart', params: { product_id: product.id, quantity: 1 }, as: :json
-        delete "/cart/#{product_2.id}", as: :json
+        delete "/cart/#{product2.id}", as: :json
       end
 
       it 'renders a successful response and remove the cart_item' do
         subject
         expect(response).not_to be_successful
-        expect(JSON.parse(response.body)['error']).to eq("Cart does not contain product #{product_2.id}")
+        expect(response.parsed_body['error']).to eq("Cart does not contain product #{product2.id}")
       end
     end
   end

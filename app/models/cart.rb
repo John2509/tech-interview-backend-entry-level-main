@@ -11,8 +11,9 @@ class Cart < ApplicationRecord
   before_validation :update_total_price
 
   def update_total_price
-    reload if id # Check if cart is on the database before doing the reload query
-    self.total_price = cart_items.map(&:total_price).sum
+    return unless id # Check if cart is on the database before doing the query
+
+    self.total_price = CartItem.where(cart_id: id).map(&:total_price).sum
   end
 
   def add_cart_item!(product, quantity)
@@ -36,8 +37,7 @@ class Cart < ApplicationRecord
   def mark_as_abandoned
     return unless !abandoned? && (last_interaction_at <= ABANDONED_THRESHOLD.hours.ago)
 
-    update_attribute(:abandoned,
-                     true)
+    update(abandoned: true)
   end
 
   def remove_if_abandoned
@@ -47,6 +47,6 @@ class Cart < ApplicationRecord
   private
 
   def update_last_interaction
-    update_attribute(:last_interaction_at, DateTime.now)
+    update(last_interaction_at: DateTime.now)
   end
 end

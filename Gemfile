@@ -22,6 +22,3 @@ group :development, :test do
   gem 'debug', platforms: %i[mri windows]
   gem 'rspec-rails', '~> 6.1.0'
 end
-
-group :development do
-end

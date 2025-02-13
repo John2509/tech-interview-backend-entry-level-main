@@ -2,7 +2,9 @@
 
 class AddLastInteractionAndAbandonedToCart < ActiveRecord::Migration[7.1]
   def change
-    add_column :carts, :last_interaction_at, :datetime, default: -> { 'CURRENT_TIMESTAMP' }
-    add_column :carts, :abandoned, :boolean, default: false
+    change_table :carts, bulk: true do |t|
+      t.datetime :last_interaction_at, default: -> { 'CURRENT_TIMESTAMP' }
+      t.boolean :abandoned, default: false, null: false
+    end
   end
 end

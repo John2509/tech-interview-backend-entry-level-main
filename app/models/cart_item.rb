@@ -12,8 +12,8 @@ class CartItem < ApplicationRecord
 
   scope :with_product, ->(product) { where(product: product) }
 
-  after_save :update_cart
   after_destroy :update_cart
+  after_save :update_cart
 
   def total_price
     product.price * quantity
