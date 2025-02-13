@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Cart < ApplicationRecord
   ABANDONED_THRESHOLD = 3
   REMOVE_THRESHOLD = 7
@@ -32,14 +34,14 @@ class Cart < ApplicationRecord
   end
 
   def mark_as_abandoned
-    return unless !abandoned? and last_interaction_at <= ABANDONED_THRESHOLD.hours.ago
+    return unless !abandoned? && (last_interaction_at <= ABANDONED_THRESHOLD.hours.ago)
 
     update_attribute(:abandoned,
                      true)
   end
 
   def remove_if_abandoned
-    destroy if abandoned? and last_interaction_at <= REMOVE_THRESHOLD.days.ago
+    destroy if abandoned? && (last_interaction_at <= REMOVE_THRESHOLD.days.ago)
   end
 
   private

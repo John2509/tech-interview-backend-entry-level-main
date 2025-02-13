@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CartsController < ApplicationController
   before_action :set_cart, only: %i[show add_item destroy_item]
 
